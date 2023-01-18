@@ -60,14 +60,20 @@ h4 {
 .weather-temperature {
     position: relative;
     font-size: 8rem;
-
     font-weight: 400;
+    margin: 0 auto;
 }
 
 .weather-temperature sup {
     position: absolute;
     font-size: 2.5rem;
     top: 10%;
+}
+
+.weather-condition {
+    text-align: center;
+    margin: -1rem auto;
+    font-size: 1.3rem;
 }
 
 .weather-description {
