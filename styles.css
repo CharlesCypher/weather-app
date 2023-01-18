@@ -43,6 +43,7 @@ h4 {
     max-width: 400px;
     height: auto;
     padding: 2rem;
+    margin: 2rem auto;
     /* From https://css.glass */
     background: rgba(60, 55, 153, 0.38);
     border-radius: 16px;
@@ -69,10 +70,12 @@ h4 {
     top: 10%;
 }
 
-.weather-feels_like p {
-    /* font-size: 2rem; */
-}
-
 .weather-description {
     text-align: center;
+}
+
+@media screen and (max-width: 376px) {
+    .weather {
+        width: 300px;
+    }
 }
