@@ -1,53 +1,46 @@
-window.addEventListener("load", () => {
-  const API_KEY = "VPBZUUWPE38MTV2K4WY8WCDYT";
-  const BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
-  const options = {
-    method: "GET",
-    headers: {},
-  };
+const API_KEY = "422NLP2KD74JLEZVLT8RH3T4Q";
+const BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
+const options = {
+  method: "GET",
+  headers: {},
+};
 
-  const timezone = document.querySelector(".weather-timezone");
-  const temperature = document.querySelector(".weather-temperature");
-  const description = document.querySelector(".weather-description");
-  const condition = document.querySelector(".weather-condition");
-  const feelsLike = document.querySelector(".weather-feels_like");
+const timezone = document.querySelector(".weather-timezone");
+const temperature = document.querySelector(".weather-temperature");
+const description = document.querySelector(".weather-description");
+const condition = document.querySelector(".weather-condition");
+const feelsLike = document.querySelector(".weather-feels_like");
+const weather = document.querySelector(".weather");
 
-  let lat;
-  let lon;
+let lat;
+let lon;
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      lat = position.coords.latitude;
-      lon = position.coords.longitude;
-      fetch(`${BASE_URL}${lat}%2C${lon}?unitGroup=metric&key=${API_KEY}&contentType=json`, options)
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-          const { conditions, temp, icon, feelslike, humidity, datetime } = data.currentConditions;
-          temperature.innerHTML = `${Math.floor(temp)}<sup>°c</sup>`;
-          timezone.textContent = data.timezone;
-          description.textContent = data.description;
-          condition.textContent = conditions;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    });
-  }
-});
+weather.innerHTML = '<div class="loading"></div>';
 
-// const fetchLocationName = async (lat, lng) => {
-//   await fetch(
-//     "https://www.mapquestapi.com/geocoding/v1/reverse?key=pd7N5vPXLU69iBsbGOm4TxDzQqjMGqNj&location=" +
-//       lat +
-//       "%2C" +
-//       lng +
-//       "&outFormat=json&thumbMaps=false"
-//   )
-//     .then((response) => response.json())
-//     .then((responseJson) => {
-//       console.log(responseJson.results);
-//     });
-// };
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition((position) => {
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+    fetch(`${BASE_URL}${lat}%2C${lon}?unitGroup=metric&key=${API_KEY}&contentType=json`, options)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        document.querySelector(".weather").style.visibility = "visible";
+
+        const { conditions, temp, icon, feelslike, humidity, datetime } = data.currentConditions;
+        weather.innerHTML = `
+        <h2 class="weather-timezone">${data.timezone}</h2>
+        <div class="div">
+          <h1 class="weather-temperature">${Math.floor(temp)}<sup>°c</sup></h1>
+          <h3 class="weather-condition">${conditions}</h3>
+          <h3 class="weather-feels_like"></h3>
+        </div>
+        <h4 class="weather-description">${data.description}</h4>`;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+}
